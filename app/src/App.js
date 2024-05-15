@@ -10,10 +10,17 @@ function App() {
   const [gameID, setgameID] = useState(0);
   const [tentativo, setTentativo] = useState(0);
   const [tentativi, setTentativi] = useState(0);
+  const [nome, setNome] = useState(0);
+  
 
   async function iniziaPartita(){
     setLoading(true);
-    const response = await fetch("http://localhost:8080/partita", {method: "POST"});
+    const response = await fetch(`http://localhost:8080/partita/`, 
+    {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({nome: nome})
+    });
     const stampa = await response.json();
     console.log(stampa);
     setLoading(false);
@@ -24,6 +31,11 @@ function App() {
   function aggiornaTenativo(e){
     setTentativo(e.target.value);
     console.log(tentativo);
+  }
+
+  function aggiornaNome(e){
+    setNome(e.target.value);
+    console.log(nome);
   }
 
 
@@ -45,6 +57,7 @@ function App() {
     <div className="App">
       <h1>indovina numero</h1>
       <button onClick={iniziaPartita}>Nuova Partita</button>
+      <input thype="text" onChange={aggiornaNome}></input>
 
       {
           stato !== 0 && !loading && avviata ?
